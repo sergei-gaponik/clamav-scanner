@@ -13,7 +13,7 @@ docker-compose up
 
 ### Synchronous Scan
 
-Scans the file and returns the result immediately:
+Scans the file and returns the result:
 
 ```bash
 curl -X POST http://localhost:3000/scan \
