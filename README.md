@@ -1,6 +1,6 @@
 # clamav-scanner
 
-ClamAV scanner with a REST API.
+ClamAV scanner with a REST API. This service will download the file from the given URL and scan it with ClamAV.
 
 ## Installation
 
