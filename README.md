@@ -11,10 +11,34 @@ docker-compose up
 
 ## Usage
 
+### Synchronous Scan
+
+Scans the file and returns the result immediately:
+
 ```bash
 curl -X POST http://localhost:3000/scan \
-  -H "Content-Type: application/json" \
-  -d '{"downloadUrl": "https://www.eicar.org/download/eicar-com-2/?wpdmdl=8842&refresh=679cf8f3441341738340595"}'
+ -H "Content-Type: application/json" \
+ -d '{
+"downloadUrl": "https://example.com/file-to-scan.pdf"
+}'
 ```
 
-See `example.sh` for more examples.
+### Asynchronous Scan
+
+Returns a requestId immediately and scans in the background:
+
+```bash
+curl -X POST http://localhost:3000/scan-async \
+ -H "Content-Type: application/json" \
+ -d '{
+"downloadUrl": "https://example.com/file-to-scan.pdf"
+}'
+```
+
+### Check Status
+
+Use the requestId from the async scan response:
+
+```bash
+curl http://localhost:3000/status/<requestId>
+```
