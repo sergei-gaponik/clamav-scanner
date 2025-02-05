@@ -11,10 +11,11 @@ import assert from 'assert'
 export async function performScan(input: { downloadUrl: string; authHeader: string }, clamAV: NodeClam): Promise<ScanResult> {
 	try {
 		assert(input.downloadUrl, 'Download URL is required')
-		assert(input.authHeader, 'Auth header is required')
 		assert(typeof input.downloadUrl === 'string', 'Download URL must be a string')
-		assert(typeof input.authHeader === 'string', 'Auth header must be a string')
 		assert(new URL(input.downloadUrl), 'Download URL must be a valid URL')
+		if (input.authHeader !== undefined) {
+			assert(typeof input.authHeader === 'string', 'Auth header must be a string')
+		}
 	} catch (e: unknown) {
 		if (e instanceof AssertionError) {
 			throw new Error(e.message)
