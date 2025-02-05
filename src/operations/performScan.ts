@@ -5,13 +5,30 @@ import { createWriteStream } from 'fs'
 import { unlink } from 'fs/promises'
 import type { ScanResult } from '../types'
 import type NodeClam from 'clamscan'
+import { AssertionError } from 'assert'
+import assert from 'assert'
 
-export async function performScan(downloadUrl: string, clamAV: NodeClam): Promise<ScanResult> {
-	// Download file
+export async function performScan(input: { downloadUrl: string; authHeader: string }, clamAV: NodeClam): Promise<ScanResult> {
+	try {
+		assert(input.downloadUrl, 'Download URL is required')
+		assert(input.authHeader, 'Auth header is required')
+		assert(typeof input.downloadUrl === 'string', 'Download URL must be a string')
+		assert(typeof input.authHeader === 'string', 'Auth header must be a string')
+		assert(new URL(input.downloadUrl), 'Download URL must be a valid URL')
+	} catch (e: unknown) {
+		if (e instanceof AssertionError) {
+			throw new Error(e.message)
+		}
+		throw e
+	}
+
 	const response = await axios({
-		url: downloadUrl,
+		url: input.downloadUrl,
 		method: 'GET',
 		responseType: 'stream',
+		headers: {
+			Authorization: input.authHeader,
+		},
 	})
 
 	// Create temporary file path

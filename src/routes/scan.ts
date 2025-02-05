@@ -13,13 +13,7 @@ export function scanHandler(clamAV: NodeClam) {
 		}
 
 		try {
-			const { downloadUrl } = req.body
-
-			if (!downloadUrl) {
-				return res.status(400).json({ error: 'Download URL is required' })
-			}
-
-			const result = await performScan(downloadUrl, clamAV)
+			const result = await performScan(req.body, clamAV)
 			console.timeEnd(requestId)
 			res.json(result)
 		} catch (error) {

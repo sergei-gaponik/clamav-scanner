@@ -15,12 +15,6 @@ export function scanAsyncHandler(clamAV: NodeClam) {
 		}
 
 		try {
-			const { downloadUrl } = req.body
-
-			if (!downloadUrl) {
-				return res.status(400).json({ error: 'Download URL is required' })
-			}
-
 			// Create scan record
 			scanStore.createScan(requestId)
 
@@ -28,7 +22,7 @@ export function scanAsyncHandler(clamAV: NodeClam) {
 			res.json({ requestId })
 
 			// Perform scan in background
-			performScan(downloadUrl, clamAV)
+			performScan(req.body, clamAV)
 				.then(result => {
 					scanStore.updateScan(requestId, {
 						status: 'completed',
